@@ -84,7 +84,9 @@ const createSubscriber = async ({ userName, durationDays, maxConnections = 1 }) 
 
   // Mock mode: skip XUI.ONE call, return fixed test credentials
   if (!isXuiEnabled()) {
-    const iptvUsername = process.env.MOCK_IPTV_USERNAME || 'demo_user';
+    const mockBase = process.env.MOCK_IPTV_USERNAME || 'demo_user';
+    const userTag  = userName.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
+    const iptvUsername = `${mockBase}_${userTag}`;
     const iptvPassword = process.env.MOCK_IPTV_PASSWORD || 'demo_pass_123';
     logger.info(`MOCK: IPTV account created for ${userName}: ${iptvUsername}`);
     return { xuiUserId: null, iptvUsername, iptvPassword, expiresAt };
